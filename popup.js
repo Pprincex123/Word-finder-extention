@@ -19,15 +19,34 @@ document.addEventListener("DOMContentLoaded", () => {
         const meaningObj = data[0]?.meanings?.[0];
         const definition = meaningObj?.definitions?.[0]?.definition || "No definition found.";
         const example = meaningObj?.definitions?.[0]?.example || "No example available.";
-        const synonyms = meaningObj?.definitions?.[0]?.synonyms || [];
         const pronunciation = data[0]?.phonetics?.[0]?.text || "/–/";
 
+        // ✅ Collect synonyms from all definitions + meaning level
+        let synonyms = [];
+
+        if (meaningObj?.definitions?.length > 0) {
+          meaningObj.definitions.forEach(def => {
+            if (def.synonyms && def.synonyms.length > 0) {
+              synonyms = [...synonyms, ...def.synonyms];
+            }
+          });
+        }
+
+        if (meaningObj?.synonyms?.length > 0) {
+          synonyms = [...synonyms, ...meaningObj.synonyms];
+        }
+
+        // Remove duplicates
+        synonyms = [...new Set(synonyms)];
+
+        // ✅ Update DOM
         document.getElementById("definition").textContent = definition;
         document.getElementById("example").textContent = `"${example}"`;
         document.getElementById("pronunciation").textContent = pronunciation;
 
         const synonymsList = document.getElementById("synonyms");
         synonymsList.innerHTML = "";
+
         if (synonyms.length > 0) {
           synonyms.forEach(s => {
             const li = document.createElement("li");
