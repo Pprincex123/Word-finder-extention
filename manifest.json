@@ -3,15 +3,10 @@
   "name": "Word Definition Finder",
   "version": "1.0",
   "description": "Highlight any word on any website to get its definition.",
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["activeTab", "scripting", "contextMenus"],
   "action": {
     "default_title": "Highlight to Define",
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "icons/icon.png",
-      "48": "icons/icon.png",
-      "128": "icons/icon.png"
-    }
+    "default_popup": "popup.html"
   },
   "background": {
     "service_worker": "background.js"
