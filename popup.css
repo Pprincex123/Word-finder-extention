@@ -34,3 +34,11 @@ summary {
   font-weight: bold;
   color: #0056b3;
 }
+
+.clickable-word {
+  color: #0077cc;
+  cursor: pointer;
+}
+.clickable-word:hover {
+  text-decoration: underline;
+}
