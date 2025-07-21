@@ -25,31 +25,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.getElementById("definition").textContent = definition;
         document.getElementById("example").textContent = `"${example}"`;
-        document.getElementById("pronunciation").textContent = pronunciation;
 
-        // 🔊 Add voice button using browser speech synthesis
-        const speakBtn = document.createElement("button");
-        speakBtn.textContent = "🔊 Speak";
-        speakBtn.onclick = () => {
+        // Pronunciation + Audio Buttons
+        const pronunciationEl = document.getElementById("pronunciation");
+        pronunciationEl.textContent = pronunciation + " ";
+
+        // 🔊 Speak button
+        const speakIcon = document.createElement("span");
+        speakIcon.textContent = "🔊";
+        speakIcon.title = "Speak";
+        speakIcon.style.cursor = "pointer";
+        speakIcon.style.marginLeft = "8px";
+        speakIcon.onclick = () => {
           const utterance = new SpeechSynthesisUtterance(word);
           utterance.lang = "en-US";
           speechSynthesis.speak(utterance);
         };
-        document.getElementById("pronunciation").appendChild(speakBtn);
+        pronunciationEl.appendChild(speakIcon);
 
-        // 🔊 Add API audio playback if available
+        // 🎧 Audio from API if available
         if (audioUrl) {
-          const listenBtn = document.createElement("button");
-          listenBtn.textContent = "🎧 Listen";
-          listenBtn.style.marginLeft = "8px";
-          listenBtn.onclick = () => {
+          const listenIcon = document.createElement("span");
+          listenIcon.textContent = "🎧";
+          listenIcon.title = "Listen (recorded)";
+          listenIcon.style.cursor = "pointer";
+          listenIcon.style.marginLeft = "8px";
+          listenIcon.onclick = () => {
             const audio = new Audio(audioUrl);
             audio.play();
           };
-          document.getElementById("pronunciation").appendChild(listenBtn);
+          pronunciationEl.appendChild(listenIcon);
         }
 
-        // Synonyms list
+        // Synonyms
         const synonymsList = document.getElementById("synonyms");
         synonymsList.innerHTML = "";
         if (synonyms.length > 0) {
@@ -63,6 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
           li.textContent = "No synonyms found.";
           synonymsList.appendChild(li);
         }
+
       } catch (err) {
         document.getElementById("definition").textContent = "Failed to fetch definition.";
       }
