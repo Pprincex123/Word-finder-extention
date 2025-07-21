@@ -1,20 +1,17 @@
+// popup.js
 document.addEventListener("DOMContentLoaded", () => {
-  const word = "example";
-  const definition = "A representative form or pattern.";
-  const synonyms = ["sample", "instance", "illustration"];
-  const exampleUsage = "This is an example of how to use the word.";
-  const pronunciation = "/ɪɡˈzæmpəl/";
+  // Ask the content script for the selected text
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.tabs.sendMessage(tabs[0].id, { action: "getSelectedText" }, (response) => {
+      if (chrome.runtime.lastError || !response?.selectedText) {
+        document.getElementById("word-title").textContent = "No word selected";
+        document.getElementById("definition").textContent = "Please highlight a word before opening the extension.";
+        return;
+      }
 
-  document.getElementById("word-title").textContent = word;
-  document.getElementById("definition").textContent = definition;
-  document.getElementById("pronunciation").textContent = pronunciation;
-  document.getElementById("example").textContent = exampleUsage;
-
-  const synonymsList = document.getElementById("synonyms");
-  synonymsList.innerHTML = "";
-  synonyms.forEach(s => {
-    const li = document.createElement("li");
-    li.textContent = s;
-    synonymsList.appendChild(li);
+      const word = response.selectedText.trim();
+      document.getElementById("word-title").textContent = word;
+      document.getElementById("definition").textContent = "Definition for \"" + word + "\" goes here...";
+    });
   });
 });
