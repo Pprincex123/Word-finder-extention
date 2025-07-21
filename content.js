@@ -41,6 +41,10 @@ document.addEventListener("mouseup", async function (event) {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "getSelectedText") {
     const selectedText = window.getSelection().toString().trim();
+    console.log("Selected text sent to popup:", selectedText);
     sendResponse({ selectedText });
+  }
+});
+
   }
 });
