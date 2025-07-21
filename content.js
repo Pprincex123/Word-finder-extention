@@ -1,3 +1,4 @@
+// This runs when the user selects a word on the page
 document.addEventListener("mouseup", async function (event) {
   const selection = window.getSelection().toString().trim();
 
@@ -33,5 +34,13 @@ document.addEventListener("mouseup", async function (event) {
     } catch {
       console.log("No definition found for:", selection);
     }
+  }
+});
+
+// ✅ Add this so popup.js can request the selected text
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "getSelectedText") {
+    const selectedText = window.getSelection().toString().trim();
+    sendResponse({ selectedText });
   }
 });
